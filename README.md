@@ -79,7 +79,7 @@ output/
     critique-v1.md, v2, v3       # Reviewer's ATS + hiring-manager critique per version
 ```
 
-Role ids can carry two independent markers: a `P-` prefix (matched your target-company list) and/or a trailing `-LS` suffix (sourced from the `cv_LS` variant) — see [Target company priority](#target-company-priority).
+Every role id starts with a prefix set by how it was sourced — see [Job id prefix](#job-id-prefix).
 
 ## Two-CV support
 
@@ -87,11 +87,20 @@ If you're targeting more than one type of role — say, a generalist track and a
 
 ## Target company priority
 
-If there are specific companies you want prioritized, list them in `material/target-companies.md` — grouped into tiers, each with a fit level, target companies, target role/title patterns, and why they fit. Sourcer only uses this list on runs where you tell it to (see [Usage](#usage) above) — having the file present doesn't turn it on by itself.
+If there are specific companies you want prioritized, list them in `material/target-companies.md` — grouped into tiers, each with a fit level, target companies, target role/title patterns, and why they fit. Sourcer only uses this list on runs where you tell it to (see [Usage](#usage) above) — having the file present doesn't turn it on by itself. When it's used, Sourcer runs dedicated searches for those companies alongside its normal search and folds each tier's rationale into scoring for any role that matches.
 
-When it's used, Sourcer runs dedicated searches for those companies alongside its normal search, and tags any matching role's id with a `P-` prefix (e.g. `P-roche-principal-pm-diagnostics-platform`) — that prefix carries through automatically to the posting file and the role's output folder. In `job-pool.json`, `P-`-tagged roles sort as their own block above everything else, each block ordered by match score.
+## Job id prefix
 
-Separately, every role found on a `cv_LS` run gets a trailing `-LS` suffix on its id (e.g. `natera-director-pm-ai-precision-medicine-LS`), since a `cv_LS` run only ever searches Life Science, Medical Device, Healthcare, Diagnostics, Biotechnology, and Pharmaceutical roles in the first place — the suffix just marks that. The two markers are independent: a role can end up with `P-`, `-LS`, both, or neither, depending on which CV variant sourced it and whether it also matched your target list.
+Every role's id starts with a prefix set by that run's configuration — which CV file was used, and whether the target-company list was on:
+
+- `cv.pdf` + target list → `X_P-`
+- `cv.pdf`, no target list → `X_N-`
+- `cv_LS.pdf` + target list → `LS_P-`
+- `cv_LS.pdf`, no target list → `LS_N-`
+
+E.g. a Databricks role from a `cv.pdf` + target-list run is `X_P-databricks-staff-pm-ai-platform`; a Natera role from a `cv_LS.pdf` run with the target list off is `LS_N-natera-director-pm-ai-precision-medicine`. The prefix carries through automatically to the posting file and the role's output folder — Tailor and Reviewer don't do anything special for it. In `job-pool.json`, `X_P-`/`LS_P-` roles (target list was on) sort as their own block above `X_N-`/`LS_N-` roles, each block ordered by match score.
+
+This id prefix is unrelated to the `_LS` tag used in filenames for CVs built from the `cv_LS` variant (e.g. `cv_LS-v1.md`) — that's a separate, file-level convention tied to which CV Tailor/Reviewer build from, not to how the role was originally sourced.
 
 ## Customizing
 
