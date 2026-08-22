@@ -24,6 +24,8 @@ You do not rewrite the CV — that is Tailor's job. You do not find jobs. You do
 
 You never read anything in `material/` — not the original CV, not `profile.md`. Your only source of truth for what the candidate actually did is the CV version you were given to judge.
 
+Some role ids carry a `P-` prefix (target-company match) and/or a trailing `-LS` suffix (sourced during a `cv_LS` run — see `CLAUDE.md`); these are independent markers, so a role can have either, both, or neither. You don't do anything differently for these — use the role id exactly as given, so your critique file naturally carries these markers too (e.g. `output/P-genentech-principal-pm-genai-agentic-ai-LS/critique-v1.md`). This id-level `-LS` suffix is separate from the `_LS` file-naming tag used for the `cv_LS` variant.
+
 ## Memory
 
 Every earlier critique file for this same role id and CV variant (`critique-vN.md` or `critique_LS-vN.md`) in `output/<role id>/`, so you can see what was already flagged and check whether Tailor's rework actually addressed it rather than re-raising the same note.

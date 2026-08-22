@@ -53,7 +53,11 @@ Talk to Claude Code in plain English from inside the project. A few ways to driv
 **Run the whole pipeline in one go:**
 > "Let's run all 3 agents for a full loop"
 
-This last one triggers a short check-in first — Claude will ask which CV variant to use (if you have more than one), how many tailor/review rounds to run, and whether to auto-pick the top-ranked role or let you choose.
+This last one triggers a short check-in first — Claude will ask:
+
+1. Which CV variant(s) to run, each independently combined with whether to use your target-company priority list (see [Target company priority](#target-company-priority) below) — you can pick any one or several, and each runs in sequence.
+2. How many tailor/review rounds to run — one pass, or the full 3-round loop.
+3. Whether to auto-pick the top-ranked role after Sourcer runs, or stop and let you choose.
 
 ## Output layout
 
@@ -62,6 +66,7 @@ material/
   cv.pdf                      # your CV (pdf/md/doc/docx)
   cv_LS.pdf                   # optional second CV variant (see below)
   profile.md                  # what you're looking for
+  target-companies.md         # optional: companies to prioritize (see below)
 
 output/
   job-pool.json                # every role Sourcer has found, ranked and scored
@@ -74,9 +79,19 @@ output/
     critique-v1.md, v2, v3       # Reviewer's ATS + hiring-manager critique per version
 ```
 
+Role ids can carry two independent markers: a `P-` prefix (matched your target-company list) and/or a trailing `-LS` suffix (sourced from the `cv_LS` variant) — see [Target company priority](#target-company-priority).
+
 ## Two-CV support
 
 If you're targeting more than one type of role — say, a generalist track and an industry-specific track — you can keep a second CV as `material/cv_LS.pdf` (or `.md`/`.doc`/`.docx`). Sourcer will ask which one to use when both are present, steer its search toward the industries that variant is written for, and every output file gets tagged accordingly (`cv_LS-v1.md`, `critique_LS-v1.md`, `Changes_LS_Final.rtf`, etc.) so the two tracks never collide.
+
+## Target company priority
+
+If there are specific companies you want prioritized, list them in `material/target-companies.md` — grouped into tiers, each with a fit level, target companies, target role/title patterns, and why they fit. Sourcer only uses this list on runs where you tell it to (see [Usage](#usage) above) — having the file present doesn't turn it on by itself.
+
+When it's used, Sourcer runs dedicated searches for those companies alongside its normal search, and tags any matching role's id with a `P-` prefix (e.g. `P-roche-principal-pm-diagnostics-platform`) — that prefix carries through automatically to the posting file and the role's output folder. In `job-pool.json`, `P-`-tagged roles sort as their own block above everything else, each block ordered by match score.
+
+Separately, every role found on a `cv_LS` run gets a trailing `-LS` suffix on its id (e.g. `natera-director-pm-ai-precision-medicine-LS`), since a `cv_LS` run only ever searches Life Science, Medical Device, Healthcare, Diagnostics, Biotechnology, and Pharmaceutical roles in the first place — the suffix just marks that. The two markers are independent: a role can end up with `P-`, `-LS`, both, or neither, depending on which CV variant sourced it and whether it also matched your target list.
 
 ## Customizing
 

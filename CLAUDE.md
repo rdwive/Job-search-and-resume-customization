@@ -10,15 +10,37 @@ Three agents, handing work to each other through files. Agents never talk. They 
 
 When I ask to run a full loop of all 3 agents, ask me first, before doing anything:
 
-1. Run for `cv` and `cv_LS` both, one after another, or just one of the two? If just one, ask which one.
+1. Which of these do you want to run — pick any one, or more than one:
+   - `cv.pdf`, using the target-company priority list
+   - `cv.pdf`, without the target-company priority list
+   - `cv_LS.pdf`, using the target-company priority list
+   - `cv_LS.pdf`, without the target-company priority list
+
+   Run each one picked, one after another.
 2. Run just one cycle between Tailor and Reviewer and then stop, or run all 3 iterations?
 3. After Sourcer runs, pick the top-fit job automatically, or stop and ask me to choose?
 
 Don't proceed until all three are answered.
 
+## Target company priority
+
+`material/target-companies.md` (optional) lists companies I specifically want prioritized. Sourcer only uses it when told to for that run (see "Running a full loop" above — using the list is a per-run choice, not automatic just because the file exists). When told to use it, Sourcer searches for these companies explicitly and tags a matching role's id with a `P-` prefix (e.g. `P-roche-principal-pm-diagnostics-platform`). That prefix carries through automatically to its posting file, its `output/[id]/` folder, and every file inside it — Tailor and Reviewer don't do anything special for it, they just use the id they're given.
+
+The target list doesn't override the `cv`/`cv_LS` industry split — a target company only gets searched if it's already in scope for that run (Life Science-side targets surface on a `cv_LS` run, others on a `cv` run). In `output/job-pool.json`, `P-` roles sort as their own block above all other roles, each block ordered by match score.
+
+Separately: every role found on a `cv_LS` run gets a trailing `-LS` suffix on its id (e.g. `natera-director-pm-ai-precision-medicine-LS`), since a `cv_LS` run only ever searches Life Science, Medical Device, Healthcare, Diagnostics, Biotechnology, and Pharmaceutical industries to begin with — the suffix just marks that. A `cv` run never produces it. This combines independently with `P-` across the four run types:
+
+- `cv.pdf` + target list → `P-` prefix on matches only
+- `cv.pdf`, no target list → neither
+- `cv_LS.pdf` + target list → `-LS` on every role, plus `P-` on matches (e.g. `P-roche-principal-pm-diagnostics-platform-LS`)
+- `cv_LS.pdf`, no target list → `-LS` on every role, never `P-`
+
+This id-level `-LS` suffix is independent of the `_LS` tag used elsewhere for files built from the `cv_LS` CV variant — a role can carry the id suffix, the file tag, both, or neither (the file tag depends on which CV Tailor/Reviewer are told to build from for a given tailoring pass, not on how the role was originally sourced).
+
 ## Files
 
 - `material/` — `cv.pdf`/`cv.md`/`cv.doc`/`cv.docx`, optionally also `cv_LS.pdf`/`cv_LS.md`/`cv_LS.doc`/`cv_LS.docx`, and `profile.md`. Written by me. If more than one CV file is present, agents ask which one to use before proceeding.
+- `material/target-companies.md` — optional. Companies I specifically want prioritized, grouped with the kind of role to look for at each. Sourcer searches for these explicitly and marks matches — see "Target company priority" below.
 - `output/postings/[id].txt` — full posting text, one file per role. Written by Sourcer.
 - `output/job-pool.json` — id, title, company, location, remote, salary, source, link, posted date, match score /100, likelihood score /100, reasoning for each, gaps list. Two-line summary only, never full posting text.
 - `output/[id]/` — one folder per role id, holding all of Tailor's and Reviewer's output for that role:

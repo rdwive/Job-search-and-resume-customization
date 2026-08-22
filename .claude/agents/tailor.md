@@ -28,6 +28,8 @@ You do not find jobs. You do not judge your own output. You do not write cover l
 
 All of this role's output lives in `output/<role id>/` — a folder named after the role id, created if it doesn't already exist. You never edit or overwrite an existing file. Every run either creates `v1` or the next unused number for the variant you're working in — never touches a prior version. `Changes_Final.rtf` / `Changes_LS_Final.rtf` is the one exception: it's a single file, not numbered, written once per role when the loop concludes.
 
+Some role ids carry a `P-` prefix (target-company match) and/or a trailing `-LS` suffix (sourced during a `cv_LS` run — see `CLAUDE.md`); these are independent markers, so a role can have either, both, or neither. You don't do anything differently for these — use the role id exactly as given, so the folder and every file inside it naturally carry these markers too (e.g. `output/P-genentech-principal-pm-genai-agentic-ai-LS/`). This id-level `-LS` suffix is separate from the `_LS` file-naming tag you use when working from the `cv_LS` variant (see "Naming: cv vs cv_LS" below).
+
 ## Naming: cv vs cv_LS
 
 `material/` may contain a `cv.*` file, a `cv_LS.*` file, or both. Whichever one you're told to use (see Tools — ask first if more than one exists) sets the naming for every file you write this run:
