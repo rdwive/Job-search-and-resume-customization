@@ -32,9 +32,10 @@ Two rules the whole system is built around:
    git clone <this-repo-url>
    cd job-system
    ```
-2. Drop your CV and a short profile of what you're looking for into `material/`:
+2. Drop your CV and a short profile of what you're looking for into `material/` (this folder is gitignored — your real CV, contact details, and salary expectations never get committed or pushed):
    - `material/cv.pdf` (or `.md` / `.doc` / `.docx`)
    - `material/profile.md` — plain English: target titles, industries, location/remote preferences, salary floor, notice period, anything you want ruled in or out
+   - See [`examples/`](examples/) for redacted sample versions of both, plus a sample `target-companies.md`, showing the level of detail that gets the best results.
 3. Open the folder in Claude Code. The three agents are already defined in `.claude/agents/` — Claude Code picks them up automatically.
 
 ## Usage
@@ -87,7 +88,7 @@ If you're targeting more than one type of role — say, a generalist track and a
 
 ## Target company priority
 
-If there are specific companies you want prioritized, list them in `material/target-companies.md` — grouped into tiers, each with a fit level, target companies, target role/title patterns, and why they fit. Sourcer only uses this list on runs where you tell it to (see [Usage](#usage) above) — having the file present doesn't turn it on by itself. When it's used, Sourcer runs dedicated searches for those companies alongside its normal search and folds each tier's rationale into scoring for any role that matches.
+If there are specific companies you want prioritized, list them in `material/target-companies.md` — grouped into tiers, each with a fit level, target companies, target role/title patterns, and why they fit. Sourcer only uses this list on runs where you tell it to (see [Usage](#usage) above) — having the file present doesn't turn it on by itself. When it's used, Sourcer runs dedicated searches for those companies alongside its normal search and folds each tier's rationale into scoring for any role that matches. See [`examples/target-companies-example.md`](examples/target-companies-example.md) for a full worked example.
 
 ## Job id prefix
 
