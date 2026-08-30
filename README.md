@@ -10,9 +10,9 @@ Reviewer →  critiques the tailored CV as an ATS and as a hiring manager, Tailo
 
 ## What it does
 
-1. **Sourcer** reads your CV and a profile of what you want, searches the web, and writes a ranked pool of real job postings — each with a match score (fit) and a likelihood score (realistic shot at an interview), both with plain-English reasoning and an honest gaps list.
+1. **Sourcer** reads your CV and a profile of what you want, searches the web, and writes a ranked pool of real job postings — each with a match score (fit) and a likelihood score (realistic shot at an interview), both with plain-English reasoning and an honest gaps list. Before anything gets added to the pool, it's checked against a set of hard filters: postings older than a month, postings that say they're closed, roles requiring onsite/hybrid attendance outside the Bay Area (or a "remote" role that specifically excludes it), and links that don't actually open to a live, specific posting all get skipped outright rather than scored low.
 2. **Tailor** takes one role from that pool and rewrites your CV for it: reordering, rewording with the posting's own language where it's honestly true, cutting irrelevant experience, and rewriting the summary — without ever adding a skill, tool, or achievement that isn't already on your CV.
-3. **Reviewer** reads the tailored CV twice — once as an ATS parser checking keyword coverage and formatting, once as a skeptical hiring manager checking narrative, seniority, and red flags — and writes a critique. Tailor rewrites from that critique. This loops up to three times, and every round produces a plain-language change log plus a Word-openable visual redline, so you can see exactly what changed and why.
+3. **Reviewer** reads the tailored CV twice — once as an ATS parser checking keyword coverage and formatting, once as a skeptical hiring manager checking narrative, seniority, and red flags — and writes a critique. Tailor rewrites from that critique. This loops up to three times, and every round produces a plain-language change log so you can see exactly what changed and why. Once the loop concludes — whether by hitting the 3-round cap or being accepted earlier — Tailor produces one consolidated Word-openable visual redline of the whole journey (original CV → final version) and the folder is cleaned down to just the final CV and that redline.
 
 Two rules the whole system is built around:
 
@@ -71,13 +71,13 @@ material/
 output/
   job-pool.json                # every role Sourcer has found, ranked and scored
   postings/[id].txt            # full posting text per role
-  [role-id]/                   # everything Tailor + Reviewer produced for one role
+  [role-id]/                   # everything Tailor + Reviewer produced for one role, while the loop runs
     cv-v1.md, v2, v3             # successive tailored CV versions
     changes-v1.md, v2, v3        # plain-language change log per version, vs. the original CV
-    changes-v1.rtf, v2, v3       # same thing as a Word-openable visual redline (strikethrough/underline)
-    Changes_Final.rtf            # one consolidated redline: final version vs. original CV
     critique-v1.md, v2, v3       # Reviewer's ATS + hiring-manager critique per version
 ```
+
+Once the loop concludes for a role, Tailor writes one file — `Changes_Final.rtf` (or `Changes_LS_Final.rtf`) — a single consolidated Word-openable visual redline (strikethrough for cuts, underline for reworded/added text) of the final CV against the original, with the job posting's link as the first line. Every earlier `cv-vN.md`, `changes-vN.md`, and `critique-vN.md` is then deleted, so the folder ends up holding just two files: the final CV and that redline.
 
 Every role id starts with a prefix set by how it was sourced — see [Job id prefix](#job-id-prefix).
 

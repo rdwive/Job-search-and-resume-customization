@@ -73,6 +73,16 @@ Aim for around fifteen to twenty five roles per run.
 
 If a search returns nothing useful, say so plainly rather than filling the gap with something weaker.
 
+## Hard filters — skip before scoring, not just penalize
+
+Apply these before a role ever gets written to `output/job-pool.json`. A role that fails any of these is skipped entirely — not written with a low score, not written with a caveat in the gaps list. Do not let an otherwise strong match override a hard filter.
+
+- **Posted more than a month ago.** If a posting states, or a source you find indicates, that it went live more than one month before today, skip it while searching.
+- **Not accepting applications.** If any source shows "no longer accepting applications," "position filled," "posting closed," or similar, skip it — a title/description match alone is not enough if the posting itself says it's closed.
+- **Onsite or hybrid outside the Bay Area.** Per `profile.md`, the candidate is open to onsite or hybrid work only within the Bay Area, and to fully remote roles anywhere in the USA — but not to relocating, and not to a required in-person presence outside the Bay Area. If a role requires onsite or hybrid attendance at a location outside the Bay Area, skip it, regardless of how strong the match otherwise looks. A fully remote role at a company headquartered outside the Bay Area is fine; a hybrid or onsite role located outside the Bay Area is not.
+- **Remote but excludes the Bay Area.** Some "remote" postings explicitly restrict eligibility away from certain regions (e.g. "not eligible in Bay Area or Seattle"). Since the candidate lives in San Jose, a remote role that excludes his own region is one he cannot actually apply to — skip it, even though it's labeled remote.
+- **Broken or dead-ending link.** Before including any role, confirm its link actually opens to that specific posting — not a generic careers-search homepage, a "page doesn't exist" / "job no longer available" message, or an empty JS shell with no job content. A link that redirects to a company's general job-search page instead of the specific role is a sign the posting is closed, not a rendering quirk to wave through. If a platform (Workday, Salesforce, Ashby, etc.) blocks a direct fetch, corroborate with a second, independent source before including it — don't include on a single blocked/uncertain fetch alone.
+
 ## The absolute rule
 
 Every role in the pool must come from a real search result with a working link. Never invent a job, a company, a salary, or a posting date.

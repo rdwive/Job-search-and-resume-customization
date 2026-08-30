@@ -47,12 +47,15 @@ This id prefix is independent of the `_LS` tag used elsewhere for files built fr
 - `material/target-companies.md` — optional. Companies I specifically want prioritized, grouped with the kind of role to look for at each. Sourcer searches for these explicitly when told to for a run — see "Target company priority" and "Job id prefix" above.
 - `output/postings/[id].txt` — full posting text, one file per role. Written by Sourcer.
 - `output/job-pool.json` — id, title, company, location, remote, salary, source, link, posted date, match score /100, likelihood score /100, reasoning for each, gaps list. Two-line summary only, never full posting text.
-- `output/[id]/` — one folder per role id, holding all of Tailor's and Reviewer's output for that role:
+- `output/[id]/` — one folder per role id, holding Tailor's and Reviewer's output for that role while the loop is running:
   - `cv-v1.md`, `v2`, `v3` — tailor output. New number each pass, never overwrite. Named `cv_LS-vN.md` instead if the rewrite was built from the `cv_LS` CV variant.
   - `changes-v1.md`, `v2`, `v3` — tailor's change log for that CV version, showing its changes against the original CV in `material/`. Written every pass, including v1. Number matches the CV version it documents. `changes_LS-vN.md` for the `cv_LS` variant.
-  - `changes-v1.rtf`, `v2`, `v3` — same pass, same number, but a Word-openable visual redline of the CV text itself (strikethrough for cuts, underline for reworded/added text) rather than a prose log. `changes_LS-vN.rtf` for the `cv_LS` variant.
-  - `Changes_Final.rtf` — written once, when the tailor/reviewer loop concludes for this role (3-loop cap reached, or accepted earlier). A single consolidated Word-openable redline comparing the final CV version directly against the original CV in `material/`, not just the last pass's increment. `Changes_LS_Final.rtf` for the `cv_LS` variant.
   - `critique-v1.md`, `v2`, `v3` — reviewer output. Number and variant both match the CV version it judges (`critique_LS-v2.md` judges `cv_LS-v2.md`).
+  - No RTF is written per pass — see below.
+
+  **Only one RTF is ever produced per role, on the final pass** — when the tailor/reviewer loop concludes (3-loop cap reached, or a version accepted earlier), whichever version number that turns out to be:
+  - `Changes_Final.rtf` (or `Changes_LS_Final.rtf`) — a single, consolidated Word-openable redline (strikethrough for cuts, underline for reworded/added text) comparing the final accepted CV version directly against the original CV in `material/` — the whole journey in one document. E.g. if the candidate accepts the v2 rework and a v3 pass is never needed, `Changes_Final.rtf` is built directly from `cv-v2.md`, not `cv-v3.md`. The role's job posting link (from `output/job-pool.json`) is included as plain text at the very top of the file, before the candidate's name.
+  - **Folder cleanup:** once `Changes_Final.rtf` is written, every earlier `cv-vN.md`, every `changes-vN.md` (including the one matching the final version), and every `critique-vN.md` are deleted. The folder ends up holding just two files for that CV variant: the final `cv-vN.md`/`cv_LS-vN.md` and `Changes_Final.rtf`/`Changes_LS_Final.rtf`. Tailor's tools don't include delete access, so Tailor reports which files are superseded and whoever is running the loop deletes them.
 
 ## Two rules, no exceptions
 

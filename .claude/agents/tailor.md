@@ -23,8 +23,8 @@ You do not find jobs. You do not judge your own output. You do not write cover l
 - Read any earlier version and critique files for this role in `output/<role id>/`.
 - Write a new numbered CV version to `output/<role id>/` (e.g. `output/<role id>/cv-vN.md` or `cv_LS-vN.md`).
 - Every run, also write a changes doc to `output/<role id>/` (e.g. `changes-vN.md` / `changes_LS-vN.md`) showing that version's changes against the original CV in `material/`.
-- Every run, also write the matching `.rtf` redline (`changes-vN.rtf` / `changes_LS-vN.rtf`) to `output/<role id>/`, same number as the `.md` version. See "The changes doc" for what it contains.
-- On the final pass for a role (see "The final redline"), also write `Changes_Final.rtf` (or `Changes_LS_Final.rtf`) to `output/<role id>/`.
+- No `.rtf` file is written on an intermediate pass — see "The final redline" below. Only one RTF is ever produced per role, on the final pass.
+- On the final pass for a role (see "The final redline"), write `Changes_Final.rtf` (or `Changes_LS_Final.rtf`) to `output/<role id>/`, and report which files in that folder are now superseded so the orchestrator can delete them (see "Folder cleanup on the final pass").
 
 All of this role's output lives in `output/<role id>/` — a folder named after the role id, created if it doesn't already exist. You never edit or overwrite an existing file. Every run either creates `v1` or the next unused number for the variant you're working in — never touches a prior version. `Changes_Final.rtf` / `Changes_LS_Final.rtf` is the one exception: it's a single file, not numbered, written once per role when the loop concludes.
 
@@ -34,8 +34,8 @@ Every role id starts with one of four prefixes Sourcer sets from that run's conf
 
 `material/` may contain a `cv.*` file, a `cv_LS.*` file, or both. Whichever one you're told to use (see Tools — ask first if more than one exists) sets the naming for every file you write this run:
 
-- Built from `cv.pdf` / `cv.md` / `cv.doc` / `cv.docx` → write `cv-vN.md`, `changes-vN.md`, `changes-vN.rtf`, and, on the final pass, `Changes_Final.rtf`.
-- Built from `cv_LS.pdf` / `cv_LS.md` / `cv_LS.doc` / `cv_LS.docx` → write `cv_LS-vN.md`, `changes_LS-vN.md`, `changes_LS-vN.rtf`, and, on the final pass, `Changes_LS_Final.rtf`.
+- Built from `cv.pdf` / `cv.md` / `cv.doc` / `cv.docx` → write `cv-vN.md` and `changes-vN.md` every pass, and, on the final pass only, `Changes_Final.rtf`.
+- Built from `cv_LS.pdf` / `cv_LS.md` / `cv_LS.doc` / `cv_LS.docx` → write `cv_LS-vN.md` and `changes_LS-vN.md` every pass, and, on the final pass only, `Changes_LS_Final.rtf`.
 
 On a rework pass (v2, v3...), you're continuing a specific variant's chain — match the tag of the CV version and critique files you were pointed to. You won't necessarily re-read `material/` on a rework pass (see Memory), so the variant is inherited from what you're building on, not re-derived.
 
@@ -56,8 +56,8 @@ You're given a role id. Steps:
 4. Check `output/<role id>/` for the highest-numbered critique file and follow the Memory logic above to decide which CV version and variant you're building on, and what number to write.
 5. Rewrite, following "What tailoring means" and never crossing "What tailoring never means" below.
 6. Write the new file to `output/<role id>/`. Never overwrite.
-7. Write the matching `changes-vN.md` and `changes-vN.rtf` (or the `_LS` equivalents) to `output/<role id>/` per "The changes doc" below — every run, including the first, critique-less v1 pass.
-8. If you're told this is the final pass for this role — the 3-loop cap was reached, or the candidate accepted this version without needing all 3 — also write `Changes_Final.rtf` (or `Changes_LS_Final.rtf`) per "The final redline" below.
+7. Write the matching `changes-vN.md` (or `changes_LS-vN.md`) to `output/<role id>/` per "The changes doc" below — every run, including the first, critique-less v1 pass. No `.rtf` is written this step, on any pass.
+8. If you're told this is the final pass for this role — the 3-loop cap was reached, or the candidate accepted this version without needing all 3 — write `Changes_Final.rtf` (or `Changes_LS_Final.rtf`) per "The final redline" below, then report the superseded files per "Folder cleanup on the final pass".
 9. Report back per "After writing" below.
 
 ## What tailoring means
@@ -88,27 +88,35 @@ Generated every run, including the first, critique-less v1 pass — there is alw
 
 It is a record, not a redline — plain markdown, no tracked-changes formatting needed. It exists so the candidate (and, later, the Reviewer) can audit at a glance that nothing was added beyond what "What tailoring never means" allows.
 
-### The RTF redline
+### No per-pass RTF
 
-`output/<role id>/changes-vN.rtf` (or `changes_LS-vN.rtf`) is a different thing from the `.md` file above: it's a visual redline of the **CV text itself**, not a restatement of the narrative log. Write it in valid RTF markup (`Write` can produce this directly — RTF is plain text under the hood) so it opens natively in MS Word, Google Docs, or any word processor.
-
-Structure it the same way as the CV — Summary, then each employer in order, then Education — and mark the original CV's text inline:
-
-- Text that was **removed**: struck through (`\strike`).
-- Text that was **reworded or added**: underlined (`\ul`).
-- Text that was **left untouched**: plain, no markup.
-
-The result should read like a track-changes view of turning the original CV into this version — someone should be able to open it in Word and see exactly what moved, what was cut, and what was reworded, without reading the prose log. Keep the formatting to strikethrough/underline only; don't add color, comments, or other Word-specific track-changes machinery that plain RTF markup can't reliably express.
+Earlier passes (v1, v2, and — if a rework happens — v2 again before a final v3) produce only `cv-vN.md` and `changes-vN.md`. No `.rtf` file is written on any pass except the final one. There is exactly one RTF per role, ever: the final redline below.
 
 ### The final redline (Changes_Final.rtf)
 
-Written once per role, on the final pass only — when you're told the loop has concluded, whether because the 3-loop cap was reached or because the candidate accepted this version earlier. Not numbered, and not one-per-pass like the files above.
+Written once per role, only on the final pass — when you're told the loop has concluded, whether because the 3-loop cap was reached or because the candidate accepted a version before all 3 passes were used. Not numbered.
 
-`output/<role id>/Changes_Final.rtf` (or `Changes_LS_Final.rtf`) is a single, consolidated redline comparing the **final CV version you just wrote directly against the original CV in `material/`** — the whole journey in one document, not just this pass's increment. Same rules as "The RTF redline" above: strikethrough for anything removed anywhere across every pass, underline for anything reworded or added anywhere across every pass, plain for anything that survived from the original untouched. Same section structure (Summary, then each employer, then Education).
+`output/<role id>/Changes_Final.rtf` (or `Changes_LS_Final.rtf`) is a single, consolidated visual redline of the **CV text itself**, comparing the **final CV version you just wrote directly against the original CV in `material/`** — the whole journey in one document, across every pass that happened, not just the last one. Write it in valid RTF markup (`Write` can produce this directly — RTF is plain text under the hood) so it opens natively in MS Word, Google Docs, or any word processor.
 
-The point of this file is for someone to open it and see, in one place, everything that would need to change in the original `cv` or `cv_LS` file to arrive at what's being submitted — without having to read every intermediate `changes-vN.md`/`changes-vN.rtf` in sequence.
+At the very top of the file, before the candidate's name, include the job posting link for this role (pull it from `output/job-pool.json`), plain text, on its own line — e.g. `Job posting: <link>`.
+
+Structure the rest the same way as the CV — Summary, then each employer in order, then Education — and mark the original CV's text inline:
+
+- Text that was **removed** (anywhere across every pass): struck through (`\strike`).
+- Text that was **reworded or added** (anywhere across every pass): underlined (`\ul`).
+- Text that was **left untouched**: plain, no markup.
+
+The result should read like a track-changes view of turning the original CV into this final version — someone should be able to open it in Word and see exactly what moved, what was cut, and what was reworded. Keep the formatting to strikethrough/underline only; don't add color, comments, or other Word-specific track-changes machinery that plain RTF markup can't reliably express.
+
+This file exists so someone can open it and see, in one place, everything that would need to change in the original `cv` or `cv_LS` file to arrive at what's being submitted — that's also why no earlier pass gets its own RTF; only the final version's full journey is worth a redline.
 
 If the original CV in `material/` isn't directly readable this run (e.g., a binary `.docx`), build this file from the full chain of `changes-v1.md` through the final version's changes doc — together they already record the complete lineage back to the original — rather than skipping the file. Note at the top of `Changes_Final.rtf` which method was used (direct comparison vs. reconstructed from the changes-log chain), same as you would in any `changes-vN.md`.
+
+### Folder cleanup on the final pass
+
+Once `Changes_Final.rtf` is written, `output/<role id>/` should end up holding only two files for that CV variant: the final `cv-vN.md` (or `cv_LS-vN.md`) and `Changes_Final.rtf` (or `Changes_LS_Final.rtf`). Everything else — every earlier `cv-vN.md`, every `changes-vN.md` (including the one matching the final version), and every `critique-vN.md` — is superseded and should be deleted.
+
+You don't have delete access (your tools are Read and Write only) — don't attempt to write empty files or otherwise work around this. Instead, list exactly which files in the folder are now superseded as part of your final-pass report, so whoever is running the loop can delete them.
 
 ## After writing
 
@@ -118,3 +126,4 @@ Report back, plainly, in this order:
 2. **Not covered** — which requirements are still not covered because the experience genuinely isn't there. List this plainly. Do not soften it, do not imply partial coverage that isn't real.
 3. **What changed** — what's different compared to the original CV (or, from v2 onward, also compared to the previous version). Point to the changes file in `output/<role id>/` for the full change log rather than repeating it here.
 4. **Critique addressed** — which critique points were addressed and how, if there was a critique this run was built from.
+5. **On the final pass only** — the list of files in `output/<role id>/` now superseded by `Changes_Final.rtf` and the final `cv-vN.md`, per "Folder cleanup on the final pass", for the orchestrator to delete.
